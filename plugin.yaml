@@ -1,0 +1,8 @@
+name: telegram-topic-only
+version: "0.1.0"
+description: Silently drop root messages in one Telegram private chat before Hermes dispatch.
+config_schema:
+  chat_id:
+    type: str
+    required: true
+    description: Positive Telegram private chat ID to protect (not a thread ID).

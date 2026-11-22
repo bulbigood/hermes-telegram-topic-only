@@ -1,0 +1,34 @@
+Telegram Topic Only — Hermes Agent plugin
+
+Keep the root of one Telegram bot DM silent. Commands (including /topic,
+/stop and /help), ordinary messages, edits and attachments from the root
+are discarded before Hermes dispatch or session recording. Private topics,
+including newly created ones, need no registration. Other DMs, groups,
+inline button callbacks and inline queries are not filtered. This plugin
+does not delete messages from Telegram or change existing Hermes history.
+
+The rule uses the incoming message, not the open Telegram tab. A private
+message marked as a topic message with thread ID greater than 1 passes;
+missing metadata, reply anchors without a topic flag and General (1) do not.
+If sending from All creates a real new topic, or Telegram delivers a reply
+from All as belonging to an existing topic, it passes. It is not possible
+to reject these while also accepting all legitimate new topics based on the
+same metadata.
+
+Deployment (operator action; not needed to run tests):
+  1. Enable threaded mode and create a topic before turning on this filter.
+  2. In the intended Hermes profile, place plugin.yaml and __init__.py in
+     a new plugins/telegram-topic-only/ directory. Do not overwrite an
+     existing installation. No additional runtime dependencies are needed
+     beyond the Hermes Telegram adapter and its python-telegram-bot package.
+  3. Using that profile's CLI, set your private chat ID once (not a topic ID):
+       hermes config set plugins.entries.telegram-topic-only.settings.chat_id <CHAT_ID>
+  4. Enable with `hermes plugins enable telegram-topic-only` and restart the
+     gateway. Verify the plugin loaded: a missing/invalid chat ID prevents
+     registration, not gateway startup. Send /status inside a new topic
+     (normal response), then as a standalone root message (no response).
+     Rollback: `hermes plugins disable telegram-topic-only` and restart.
+
+Offline verification: from this directory run `python -m unittest discover
+-s tests -v` using an interpreter with python-telegram-bot 22.6 installed.
+Tests exercise real PTB dispatch without contacting Telegram or an LLM.
