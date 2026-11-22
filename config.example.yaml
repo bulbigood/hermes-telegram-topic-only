@@ -1,0 +1,9 @@
+# Merge these settings into the target Hermes profile; do not replace its config.
+plugins:
+  entries:
+    telegram-topic-only:
+      settings:
+        chat_id: "<CHAT_ID>"
+        root_allowlist: []
+        # To enable exceptions, replace the empty list above with this line:
+        # root_allowlist: ["/help", "/status", "/topic"]

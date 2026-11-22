@@ -1,6 +1,6 @@
 Telegram Topic Only — Hermes Agent plugin
 
-Keep the root of one Telegram bot DM silent. Commands (including /topic,
+By default, keep the root of one Telegram bot DM silent. Commands (including /topic,
 /stop and /help), ordinary messages, edits and attachments from the root
 are discarded before Hermes dispatch or session recording. Private topics,
 including newly created ones, need no registration. Other DMs, groups,
@@ -14,6 +14,14 @@ If sending from All creates a real new topic, or Telegram delivers a reply
 from All as belonging to an existing topic, it passes. It is not possible
 to reject these while also accepting all legitimate new topics based on the
 same metadata.
+
+Optional exceptions: see config.example.yaml for the profile settings. The
+root_allowlist defaults to []. Each entry permits exactly one full text (a
+slash command or a phrase). Case, whitespace, @bot suffixes and arguments
+must match literally: allowing /help does not allow /help anything. List a
+specific argument form separately if needed. Captions are not text messages.
+A match passes through to normal Hermes processing, including authorization,
+routing and history. Restart the gateway after changing the settings.
 
 Deployment (operator action; not needed to run tests):
   1. Enable threaded mode and create a topic before turning on this filter.
